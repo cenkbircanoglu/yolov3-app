@@ -81,3 +81,6 @@ Kindly raise your issues in the issues section of GitHub repository.
 ## Like to contribute?
 Feel free to send PRs or discuss on possible future improvements in issues section. 
 Your contributions are most welcome!
+
+
+gunicorn -w 4 -b 127.0.0.1:5000 app:app

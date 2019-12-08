@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-devel
+FROM ubuntu:16.04
 
 ## Pyton installation ##
 RUN apt-get update && apt-get install -y python3.5 python3-pip git
@@ -21,32 +21,27 @@ RUN make -j4
 RUN make install
 RUN ldconfig
 
-
 ## Downloading and compiling darknet ##
 WORKDIR /
 RUN apt-get install -y git
 RUN git clone https://github.com/pjreddie/darknet.git
 WORKDIR /darknet
-RUN sed -i '/GPU=0/c\GPU=1' Makefile
+# Set OpenCV makefile flag
 RUN sed -i '/OPENCV=0/c\OPENCV=1' Makefile
 RUN make
 ENV DARKNET_HOME /darknet
 ENV LD_LIBRARY_PATH /darknet
-
-## Download and compile YOLO3-4-Py ##
-WORKDIR /
-RUN git clone https://github.com/cenkbircanoglu/yolov3-app.git
-WORKDIR /yolov3-app
-RUN apt-get install -y pkg-config
+RUN pip3 install --upgrade pip
 RUN pip3 install pkgconfig cython numpy gunicorn flask flask_cors
-ENV GPU 1
-ENV OPENCV 1
+
+## Download and compile yolo3-4-py ##
+WORKDIR /
+ADD . /yolo3-4-py
+WORKDIR /yolo3-4-py
+RUN pip3 install pkgconfig
+RUN pip3 install cython
 RUN python3 setup.py build_ext --inplace
 
-## Download Models ##
-ADD ./download_models.sh /YOLO3-4-Py/download_models.sh
-RUN sh download_models.sh
-
 ## Run test ##
-ADD ./docker_demo.py /YOLO3-4-Py/docker_demo.py
+RUN sh download_models.sh
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]

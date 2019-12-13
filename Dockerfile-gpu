@@ -48,5 +48,4 @@ ADD ./download_models.sh /yolov3-app/download_models.sh
 RUN sh download_models.sh
 
 ## Run test ##
-ADD ./docker_demo.py /yolov3-app/docker_demo.py
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "-w", "12", "-b", "0.0.0.0:5000", "app:app"]

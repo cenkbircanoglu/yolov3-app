@@ -44,4 +44,4 @@ RUN python3 setup.py build_ext --inplace
 
 ## Run test ##
 RUN sh download_models.sh
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:5000", "app:app"]

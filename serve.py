@@ -2,6 +2,7 @@ import urllib.request
 
 import cv2
 import numpy as np
+
 from pydarknet import Detector, Image
 
 
@@ -18,8 +19,20 @@ def get_model_api():
         car_bbox = []
         try:
             url = input_data.get('image_url')
-            resp = urllib.request.urlopen(url)
-            image = np.asarray(bytearray(resp.read()), dtype="uint8")
+            if 'file://' in url:
+                with open(url, 'rb') as f:
+                    image = np.asarray(bytearray(f.read()), dtype="uint8")
+            elif 's3://' in url:
+                import boto3
+                s3 = boto3.client('s3')
+                bucket = url.split('/')[2]
+                key = '/'.join(url.split('/')[3:])
+                obj = s3.get_object(Bucket=bucket, Key=key)
+                image = np.asarray(bytearray(obj['Body'].read()),
+                                   dtype="uint8")
+            else:
+                resp = urllib.request.urlopen(url)
+                image = np.asarray(bytearray(resp.read()), dtype="uint8")
             img = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
             img2 = Image(img)

@@ -32,7 +32,7 @@ RUN make
 ENV DARKNET_HOME /darknet
 ENV LD_LIBRARY_PATH /darknet
 RUN pip3 install --upgrade pip
-RUN pip3 install pkgconfig cython numpy gunicorn flask flask_cors
+RUN pip3 install pkgconfig cython numpy gunicorn flask flask_cors boto3
 
 ## Download and compile yolo3-4-py ##
 WORKDIR /

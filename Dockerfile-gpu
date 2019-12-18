@@ -38,7 +38,7 @@ ADD . /yolov3-app
 WORKDIR /yolov3-app
 RUN apt-get install -y pkg-config
 RUN pip3 install --upgrade pip
-RUN pip3 install pkgconfig cython numpy gunicorn flask flask_cors
+RUN pip3 install pkgconfig cython numpy gunicorn flask flask_cors boto3
 ENV GPU 1
 ENV OPENCV 1
 RUN python3 setup.py build_ext --inplace

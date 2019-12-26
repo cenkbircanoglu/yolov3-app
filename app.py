@@ -30,10 +30,10 @@ def server_error(e):
 
 
 # API route
-@app.route('/api', methods=['POST'])
+@app.route('/api', methods=['GET'])
 def api():
-    input_data = request.json
-    output_data = model_api(input_data)
+    image_url = request.args.get('image_url')
+    output_data = model_api(image_url)
     response = jsonify(output_data)
     return response
 

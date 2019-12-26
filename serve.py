@@ -1,7 +1,6 @@
-import urllib.request
-
 import cv2
 import numpy as np
+import urllib.request
 
 from pydarknet import Detector, Image
 
@@ -14,9 +13,7 @@ def get_model_api():
                    bytes("cfg/coco.data", encoding="utf-8"))
 
     def model_api(input_data):
-        is_car = False
-        car_score = 0
-        car_bbox = []
+        car_exists = False
         try:
             url = input_data.get('image_url')
             if 'file://' in url:
@@ -42,21 +39,11 @@ def get_model_api():
 
             for cat, score, bbox in results:
                 if cat.decode() == 'car':
-                    is_car = True
-                    car_score = score
-                    car_bbox = bbox
+                    car_exists = True
                     break
-            return {
-                'includes_car': is_car,
-                'score': car_score,
-                'bbox': car_bbox
-            }
+            return car_exists
         except Exception as e:
             print(e)
-            return {
-                'includes_car': is_car,
-                'score': car_score,
-                'bbox': car_bbox
-            }
+            return car_exists
 
     return model_api

@@ -1,6 +1,7 @@
+import urllib.request
+
 import cv2
 import numpy as np
-import urllib.request
 
 from pydarknet import Detector, Image
 
@@ -12,10 +13,9 @@ def get_model_api():
                    bytes("weights/yolov3.weights", encoding="utf-8"), 0,
                    bytes("cfg/coco.data", encoding="utf-8"))
 
-    def model_api(input_data):
+    def model_api(url):
         car_exists = False
         try:
-            url = input_data.get('image_url')
             if 'file://' in url:
                 with open(url, 'rb') as f:
                     image = np.asarray(bytearray(f.read()), dtype="uint8")
@@ -38,6 +38,7 @@ def get_model_api():
             results = net.detect(img2)
 
             for cat, score, bbox in results:
+                print(cat)
                 if cat.decode() == 'car':
                     car_exists = True
                     break

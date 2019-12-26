@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-from serve import get_model_api  # see part 1.
+from flask_cors import CORS  # see part 1.
 
 app = Flask(__name__)
 CORS(app)  # needed for cross-domain requests, allow everything by default
-model_api = get_model_api()
 
 
 # default route
@@ -32,7 +30,10 @@ def server_error(e):
 # API route
 @app.route('/api', methods=['GET'])
 def api():
-    image_url = request.args.get('image_url')
+    image_url = request.args['image_url']
+    from serve import get_model_api
+    model_api = get_model_api()
+
     output_data = model_api(image_url)
     response = jsonify(output_data)
     return response

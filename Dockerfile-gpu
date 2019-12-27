@@ -48,4 +48,4 @@ ADD ./download_models.sh /yolov3-app/download_models.sh
 RUN sh download_models.sh
 
 ## Run test ##
-CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "-w", "5", "-b", "0.0.0.0:5000", "app:app"]

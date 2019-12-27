@@ -43,6 +43,6 @@ def get_model_api():
                     break
             return car_exists
         except Exception as e:
-            return car_exists
+            return 'unknown'
 
     return model_api

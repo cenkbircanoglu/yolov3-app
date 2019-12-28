@@ -38,7 +38,7 @@ def get_model_api():
             results = net.detect(img2)
 
             for cat, score, bbox in results:
-                if cat.decode() == 'car':
+                if cat.decode() == 'car' or cat.decode() == 'bus' or cat.decode() == 'truck':
                     car_exists = True
                     break
             return car_exists

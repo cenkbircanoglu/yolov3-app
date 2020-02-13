@@ -9,6 +9,7 @@ from pydarknet import Detector, Image
 def get_model_api():
     """Returns lambda function for api"""
     # 1. initialize model once and for all and reload weights
+
     net = Detector(bytes("cfg/yolov3.cfg", encoding="utf-8"),
                    bytes("weights/yolov3.weights", encoding="utf-8"), 0,
                    bytes("cfg/coco.data", encoding="utf-8"))
@@ -36,12 +37,15 @@ def get_model_api():
 
             # r = net.classify(img2)
             results = net.detect(img2)
-
+            response = []
             for cat, score, bbox in results:
-                if cat.decode() == 'car' or cat.decode() == 'bus' or cat.decode() == 'truck':
-                    car_exists = True
-                    break
-            return car_exists
+                response.append({
+                    'category': cat.decode(),
+                    'proba': score,
+                    'bbox': bbox
+                })
+            print(response)
+            return response
         except Exception as e:
             return 'unknown'
 

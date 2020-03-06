@@ -18,7 +18,7 @@ def get_model_api():
         car_exists = False
         try:
             if 'file://' in url:
-                with open(url, 'rb') as f:
+                with open(url.replace('file://', ''), 'rb') as f:
                     image = np.asarray(bytearray(f.read()), dtype="uint8")
             elif 's3://' in url:
                 import boto3
